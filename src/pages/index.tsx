@@ -6,6 +6,8 @@ import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
 import { convertDurationToTimeString } from '../utils/convertDurationToTimeString';
 import styles from './home.module.scss';
+import { useContext } from 'react';
+import { PlayerContext } from '../contexts/PlayerContext';
 
 type Episode = {
   id: string;
@@ -26,10 +28,12 @@ type HomeProps = {
 }
 
 export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
+  const { playEpisode } = useContext(PlayerContext);
+
   return (
     <div className={styles.homepage}>
       <section className={styles.latestEpisodes}>
-        <h2>Últimos lançamentos</h2>
+        <h2>Últimos lançamentos </h2>
         <ul>
           {latestEpisodes.map(episode => {
             return (
@@ -49,11 +53,13 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationAsString}</span>
+
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => playEpisode(episode)}>
                   <img src="./play-green.svg" alt="Tocar episódio" />
                 </button>
               </li>
+
             )
           })}
         </ul>
@@ -93,9 +99,9 @@ export default function Home({ latestEpisodes, allEpisodes }: HomeProps) {
                   <td style={{ width: 100 }}>{episode.publishedAt}</td>
                   <td>{episode.durationAsString}</td>
                   <td>
-                    <button type="button">
+                    {/* <button type="button">
                       <img src="/play-green.svg" alt="Tocar episódio" />
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               )
